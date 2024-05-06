@@ -32,7 +32,7 @@ public class IdempotentAPICallerImpl implements IdempotentAPICaller {
 	@Override
 	@Cacheable(value = "nomeCache")
 	public ExactlyOnceDto loadExactlyOnce(String id) {
-		logger.info("Reading from repo");
+		logger.info("Reading from repo ");
 		final ExactlyOnce exactlyOnce = exactlyOnceRepository.findById(id).get();
 		final ExactlyOnceDto exactlyOnceDto = new ExactlyOnceDto();
 		exactlyOnceDto.setLoadedOn(new Date());
