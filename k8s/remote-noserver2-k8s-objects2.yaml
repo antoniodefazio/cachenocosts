@@ -1,0 +1,53 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: cachenoserver2-service
+  annotations:
+    service.alpha.kubernetes.io/tolerate-unready-endpoints: "true"
+spec:
+  ports:
+  - name: http
+    port: 8080
+    targetPort: 8080
+    protocol: TCP
+  - name: ping
+    port: 7800
+    targetPort: 8080
+    protocol: TCP
+  publishNotReadyAddresses: true
+  selector:
+    app2: cachenoserver2
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cachenoserver2
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app2: cachenoserver2
+      app: cachenoserver
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app2: cachenoserver2
+        app: cachenoserver
+    spec:
+      serviceAccountName: jgroups-kubeping-service-account
+      containers:
+      - image: antoniodefazio/cachenoserver
+        name:  cachenoserver2
+        envFrom:
+        - configMapRef:
+            name: my-config
+        ports:
+        - containerPort: 8080
+          name: http
+        - containerPort: 7800
+          name: ping
+
+
+

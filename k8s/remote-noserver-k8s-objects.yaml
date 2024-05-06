@@ -1,0 +1,85 @@
+# configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: my-config
+data:
+  infinispan.clustered: infinispan_clustered_kube_ping-opsh.xml
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: jgroups-kubeping-service-account
+---
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: jgroups-kubeping-pod-reader
+rules:
+- apiGroups: [""]
+  resources: ["pods"]
+  verbs: ["get", "list"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: jgroups-kubeping-api-access
+  #namespace: antoniodefazio-dev
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: jgroups-kubeping-pod-reader
+subjects:
+- kind: ServiceAccount
+  name: jgroups-kubeping-service-account
+  #namespace: antoniodefazio-dev
+--- 
+apiVersion: v1
+kind: Service
+metadata:
+  name: cachenoserver-service
+  annotations:
+    service.alpha.kubernetes.io/tolerate-unready-endpoints: "true"
+spec:
+  ports:
+  - name: http
+    port: 8080
+    targetPort: 8080
+    protocol: TCP
+  - name: ping
+    port: 7800
+    targetPort: 8080
+    protocol: TCP
+  publishNotReadyAddresses: true
+  selector:
+    app: cachenoserver
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cachenoserver
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: cachenoserver
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: cachenoserver
+    spec:
+      serviceAccountName: jgroups-kubeping-service-account
+      containers:
+      - image: antoniodefazio/cachenoserver
+        name:  cachenoserver
+        envFrom:
+        - configMapRef:
+            name: my-config
+        ports:
+        - containerPort: 8080
+          name: http
+        - containerPort: 7800
+          name: ping
+     

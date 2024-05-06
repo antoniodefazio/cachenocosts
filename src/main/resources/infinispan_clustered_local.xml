@@ -1,0 +1,34 @@
+<infinispan xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:schemaLocation="urn:infinispan:config:12.0 https://infinispan.org/schemas/infinispan-config-12.0.xsd">
+
+
+	<jgroups>
+		<stack-file name="external-file" path="jgroups-udp.xml" />
+	</jgroups>
+
+	<cache-container default-cache="nomeCache"
+		statistics="true">
+		<serialization 
+			marshaller="org.infinispan.commons.marshall.JavaSerializationMarshaller">
+	        <allow-list>  
+
+       <regex>org.springframework.cache.interceptor.*</regex>  
+        <regex>com.example.cachenoserver.dtos.*</regex>
+          <regex>java.sql.*</regex>
+    </allow-list>  
+	
+		</serialization>
+		<transport stack="external-file" cluster="docker-desktop" />
+
+
+
+
+
+ <distributed-cache name="nomeCache" mode="SYNC">
+            <!-- Cache configuration settings -->
+        </distributed-cache>
+
+
+	</cache-container>
+
+</infinispan>

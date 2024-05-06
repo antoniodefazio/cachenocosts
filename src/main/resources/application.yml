@@ -1,0 +1,10 @@
+infinispan:
+  clustered: infinispan_clustered_local.xml
+logging:
+  level:
+    org:
+      springframework:
+        web: DEBUG
+      #jgroups: TRACE
+
+
