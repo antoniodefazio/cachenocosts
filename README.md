@@ -98,7 +98,7 @@ spec:
 So:
 
 - curl http://localhost:8080/infinispanhit/3 to insert the value in cache with key “3”
-- to now test using get that the 2 pods are actually aligned we must ensure that the LoadBalancer balancing algorithm queries both and in this regard I have prepared a Jmeter(https://jmeter.apache.org/) file at https://github.com/antoniodefazio/cachenocosts/blob/master/k8s/HTTP_Request.jmx which allows you to make thousands of simultaneous calls following which you can check the logs you can see how both pods contain the same data in cache
+- to now test using get that the 2 pods are actually aligned we must **ensure that the LoadBalancer balancing algorithm queries both** and in this regard I have prepared a Jmeter(https://jmeter.apache.org/) file at https://github.com/antoniodefazio/cachenocosts/blob/master/k8s/HTTP_Request.jmx which allows you to make thousands of simultaneous calls following which you can **check the logs** you can see how both pods contain the same data in cache
 
 Now comes the fun part:
 
