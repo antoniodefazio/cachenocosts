@@ -23,7 +23,7 @@ The project exposes the simple REST APIs documentation via Swagger to http://loc
 
 
 
-## 1) Steps to test the app locally
+## 1) Steps to test the distributed cache locally
 
 The app launched on localhost uses the file https://github.com/antoniodefazio/cachenocosts/blob/master/src/main/resources/jgroups-udp.xml as a JGroups configuration, therefore it uses the UDP multicast ports used for broadcasting messages to multiple hosts within a network, that is IGMP (Internet Group Management Protocol) described in
 RFC 3376(https://datatracker.ietf.org/doc/html/rfc3376)
@@ -36,7 +36,7 @@ RFC 3376(https://datatracker.ietf.org/doc/html/rfc3376)
 Now we have 2 Spring Boot running on different ports, 2 JVM, no insert in cache called on 8081 app,  so the final test is:
 - curl http://localhost:8081/infinispanget/3 to get the value in cache with key “3” and  verify that they are aligned with 8080 app
 
-## 2) Steps to test the app locally with Docker Desktop(https://www.docker.com/products/docker-desktop)
+## 2) Steps to test the distributed cache locally with Docker Desktop(https://www.docker.com/products/docker-desktop)
 
 Docker Desktop introduced the ability to use Kubernetes as an orchestration tool in version 18.02, released in February 2018 so after install Docker Desktop you can enable K8S to get a cluster running on localhost.
 
@@ -127,7 +127,7 @@ spec:
 - curl http://localhost:8081/infinispanget/3 to get the value in cache with key “3” and  verify that they are aligned with 8080 app
 
 
-## 3) Steps to test the in Cloud on  Openshift, GKE, EKS and so on
+## 3) Steps to test the distributed cache in Cloud on Openshift, GKE, EKS and so on
 
 - kubectl apply the https://github.com/antoniodefazio/cachenocosts/blob/master/k8s/remote-noserver-k8s-objects.yaml
 
