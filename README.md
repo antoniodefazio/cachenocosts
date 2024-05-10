@@ -84,14 +84,17 @@ _apiVersion: v1
 kind: Service
 metadata:
   name: cachenoserver-loadbalancer_
+  
 _spec:
   type: LoadBalancer
   ports:_
+  
   _- port: 8080
     targetPort: 8080
     protocol: TCP
   selector:
     app: cachenoserver_
+    
 
 **which esposes the 8080 port to the cluster** we can hit the same http://localhost:8080/swagger-ui/index.html#, but remembering that we are now aiming for pods(2) running in our local k8s.
 
@@ -112,14 +115,18 @@ _apiVersion: v1
 kind: Service
 metadata:
   name: cachenoserver2-loadbalancer_
+  
 _spec:
   type: LoadBalancer
   ports:_
+  
   _- port: 8081
     targetPort: 8080
     protocol: TCP
   selector:
     app2: cachenoserver2_
+
+    
 
 **which esposes the 8081 port to the cluster** we can hit the same http://localhost:8081/swagger-ui/index.html#, but remembering that we are now aiming for pods(2) running in our local k8s.
 
