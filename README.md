@@ -83,11 +83,11 @@ Now, thanks to the K8S LoadBalancer
 _apiVersion: v1
 kind: Service
 metadata:
-  name: cachenoserver-loadbalancer
-spec:
+  name: cachenoserver-loadbalancer_
+_spec:
   type: LoadBalancer
-  ports:
-  - port: 8080
+  ports:_
+  _- port: 8080
     targetPort: 8080
     protocol: TCP
   selector:
@@ -111,11 +111,11 @@ Now, thanks to the K8S LoadBalancer
 _apiVersion: v1
 kind: Service
 metadata:
-  name: cachenoserver2-loadbalancer
-spec:
+  name: cachenoserver2-loadbalancer_
+_spec:
   type: LoadBalancer
-  ports:
-  - port: 8081
+  ports:_
+  _- port: 8081
     targetPort: 8080
     protocol: TCP
   selector:
