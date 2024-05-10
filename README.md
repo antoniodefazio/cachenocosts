@@ -1,3 +1,5 @@
+# How to create a zero-cost distributed cache that works on all managed Kubernetes services: Openshift, GKE, EKS and so on, via Jgroups Java library in conjunction with Infinispan inside a Spring Boot project
+
 I worked for the most important Italian telecommunications company, the manager tells me that during a migration we have to manage some data with a distributed and shared cache across the various pods. My proposal "Let's use Redis!", the manager's response "the budget does not include the introduction of another infrastructure". Then I thought "Actually nothing in life comes for free..."
 
 I start with in-depth questions about the task assigned to me and do a small analysis of the requirements and a minimum feasibility study of my solution starting my research. I also point out to the manager that we are in the migration phase so we need to use a solution that works for both Google Kuberntes Engine and Openshift.
@@ -16,7 +18,7 @@ The project exposes the simple REST APIs documentation via Swagger to http://loc
 -/all-caches, fetches all caches and their data can be run at two different nodes in a way to verify that they are aligned
 
 
-1) Steps to test the app locally
+# 1) Steps to test the app locally
 
 The app launched on localhost uses the file https://github.com/antoniodefazio/cachenocosts/blob/master/src/main/resources/jgroups-udp.xml as a JGroups configuration, therefore it uses the UDP multicast ports used for broadcasting messages to multiple hosts within a network, that is IGMP (Internet Group Management Protocol) described in
 RFC 3376(https://datatracker.ietf.org/doc/html/rfc3376)
@@ -29,7 +31,7 @@ RFC 3376(https://datatracker.ietf.org/doc/html/rfc3376)
 Now we have 2 Spring Boot running on different ports, 2 JVM, no insert in cache called on 8081 app,  so the final test is:
 - curl http://localhost:8081/infinispanget/3 to get the value in cache with key “3” and  verify that they are aligned with 8080 app
 
-2) Steps to test the app locally with Docker Desktop(https://www.docker.com/products/docker-desktop)
+# 2) Steps to test the app locally with Docker Desktop(https://www.docker.com/products/docker-desktop)
 
 Docker Desktop introduced the ability to use Kubernetes as an orchestration tool in version 18.02, released in February 2018 so after install Docker Desktop you can enable K8S to get a cluster running on localhost.
 
@@ -43,19 +45,19 @@ This way the pods will use https://github.com/antoniodefazio/cachenocosts/blob/m
 
 But let's get practical to understand better: ssh into the pod and launch the following commands in sequence:
 
-# Point to the internal API server hostname
+Point to the internal API server hostname
 APISERVER="https://${KUBERNETES_SERVICE_HOST}:${KUBERNETES_SERVICE_PORT}" 
 
-# Path to ServiceAccount token
+Path to ServiceAccount token
 SERVICEACCOUNT=/var/run/secrets/kubernetes.io/serviceaccount
 
-# Read this Pod's namespace
+Read this Pod's namespace
 NAMESPACE=$(cat ${SERVICEACCOUNT}/namespace)
 
-# Read the ServiceAccount bearer token
+Read the ServiceAccount bearer token
 TOKEN=$(cat ${SERVICEACCOUNT}/token)
 
-# Reference the internal certificate authority (CA)
+Reference the internal certificate authority (CA)
 CACERT=${SERVICEACCOUNT}/ca.crt
 
 
@@ -114,7 +116,7 @@ which esposes the 8081 port to the cluster we can hit the same http://localhost:
 - curl http://localhost:8081/infinispanget/3 to get the value in cache with key “3” and  verify that they are aligned with 8080 app
 
 
-3) Steps to test the in Cloud on  Openshift, GKE, EKS and so on
+# 3) Steps to test the in Cloud on  Openshift, GKE, EKS and so on
 
 - kubectl apply the https://github.com/antoniodefazio/cachenocosts/blob/master/k8s/remote-noserver-k8s-objects.yaml
 
