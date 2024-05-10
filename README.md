@@ -53,35 +53,34 @@ But let's get practical to understand better: ssh into the pod and launch the fo
 
 Point to the internal API server hostname
 
-APISERVER="https://${KUBERNETES_SERVICE_HOST}:${KUBERNETES_SERVICE_PORT}" 
+_APISERVER="https://${KUBERNETES_SERVICE_HOST}:${KUBERNETES_SERVICE_PORT}"_ 
 
 Path to ServiceAccount token
 
-SERVICEACCOUNT=/var/run/secrets/kubernetes.io/serviceaccount
+_SERVICEACCOUNT=/var/run/secrets/kubernetes.io/serviceaccount_
 
 Read this Pod's namespace
 
-NAMESPACE=$(cat ${SERVICEACCOUNT}/namespace)
+_NAMESPACE=$(cat ${SERVICEACCOUNT}/namespace)_
 
 Read the ServiceAccount bearer token
 
-TOKEN=$(cat ${SERVICEACCOUNT}/token)
+_TOKEN=$(cat ${SERVICEACCOUNT}/token)_
 
 Reference the internal certificate authority (CA)
 
-CACERT=${SERVICEACCOUNT}/ca.crt
-
+_CACERT=${SERVICEACCOUNT}/ca.crt_
 
 Now let's use curl to make the call we talked about above:
 
-curl --cacert ${CACERT} --header "Authorization: Bearer ${TOKEN}" -X GET ${APISERVER}/api/v1/namesp
-aces/${NAMESPACE}/pods?labelSelector=app%3Dcachenoserver
+_curl --cacert ${CACERT} --header "Authorization: Bearer ${TOKEN}" -X GET ${APISERVER}/api/v1/namesp
+aces/${NAMESPACE}/pods?labelSelector=app%3Dcachenoserver_
 
 **The result is the list of running pods with label app: cachenoserver**
 
 Now, thanks to the K8S LoadBalancer
 
-apiVersion: v1
+_apiVersion: v1
 kind: Service
 metadata:
   name: cachenoserver-loadbalancer
@@ -92,7 +91,7 @@ spec:
     targetPort: 8080
     protocol: TCP
   selector:
-    app: cachenoserver
+    app: cachenoserver_
 
 **which esposes the 8080 port to the cluster** we can hit the same http://localhost:8080/swagger-ui/index.html#, but remembering that we are now aiming for pods(2) running in our local k8s.
 
@@ -109,7 +108,7 @@ Now comes the fun part:
 
 Now, thanks to the K8S LoadBalancer
 
-apiVersion: v1
+_apiVersion: v1
 kind: Service
 metadata:
   name: cachenoserver2-loadbalancer
@@ -120,7 +119,7 @@ spec:
     targetPort: 8080
     protocol: TCP
   selector:
-    app2: cachenoserver2
+    app2: cachenoserver2_
 
 **which esposes the 8081 port to the cluster** we can hit the same http://localhost:8081/swagger-ui/index.html#, but remembering that we are now aiming for pods(2) running in our local k8s.
 
@@ -133,11 +132,11 @@ spec:
 
 It is the same for local K8S, except for LoadBalancer creations as we know that for k8s no differences between cloud and onprem, the only difference is in the integration points like LoadBalancer. **The same is also the Infinispan and related Jgroups configuration but I just wanted to keep separated files for Cloud** and underline, example, that in
 
- <org.jgroups.protocols.kubernetes.KUBE_PING
+ _<org.jgroups.protocols.kubernetes.KUBE_PING
      port_range="10"
      namespace="${POD_NAMESPACE:antoniodefazio-dev}"
      labels="${KUBERNETES_LABELS:app=cachenoserver}"
-   />
+   />_
    
 the namespace is no more default so you can choose one and in Openshift, example, is the name of the project.
 
@@ -149,11 +148,11 @@ So:
 
 Now we don t have any LoadBalancer and any external access to test the cache I decide to use Apache Benchmark(https://httpd.apache.org/docs/2.4/programs/ab.html) within the pods, so after ssh into pod with **Deployment name cachenoserver**(remember that the pod cachenoserver2 are the second ones):
 
-- curl http://localhost:8080/infinispanhit/3, to save in cache
+- _curl http://localhost:8080/infinispanhit/3, to save in cache_
 
 Inside one of these pods(**cachenoserver**) we hit the “others”(**cachenoserver2**) via service discovery: 
 
-- curl cachenoserver2-service:8080/infinispanget/3
-- ab -n 1000 cachenoserver2-service:8080/infinispanget/3
+- _curl cachenoserver2-service:8080/infinispanget/3_
+- _ab -n 1000 cachenoserver2-service:8080/infinispanget/3_
 
 Apache Benchmark allows you to make 1000 simultaneous calls to make sure you query all the pods "behind" a Service…..
