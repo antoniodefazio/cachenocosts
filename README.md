@@ -14,11 +14,11 @@ The project exposes the simple REST APIs documentation via Swagger to http://loc
 
 -/infinispanhit/, inserts value in cache with a specified key, it can be run in a node and call get in another node, to verify that they are aligned 
 
--/infinispanget/, gets value from cach with a specified key, it can be run at two different nodes in a way to verify that they are aligned
+-/infinispanget/, gets value from cach with a specified key, it can be run at two different nodes to verify that they are aligned
 
 -/hitCached, inside the Service the @Cacheable is used to cache database data
 
--/all-caches, fetches all caches(distributed and not) and their data can be run at two different nodes in a way to verify that they are aligned
+-/all-caches, fetches all caches(distributed and not) and their data can be run at two different nodes to verify that they are aligned
 
 
 
@@ -46,7 +46,7 @@ Docker Desktop introduced the ability to use Kubernetes as an orchestration tool
 (I underline that there are 2 replicas, therefore we will have 2 pods running)
 
 
-This way the pods will use https://github.com/antoniodefazio/cachenocosts/blob/master/src/main/resources/jgroups-kubernetes-kube-ping.xml as the JGroups configuration, so we will use the Jgroups(https ://github.com/jgroups-extras/jgroups-kubernetes). In a nutshell, this exploits the power of Kuberntes labels as pod selectors which in this way can be searched for and registered as cache nodes. In summary: in order for a pods to call the K8S API to know which pods have a certain label it needs the privileges to do so, as in K8S RBAC is in force each pod needs an associated ServiceAccount with the privileges to make the call. By associating the ServiceAccount with the pod, K8S places the token with privileges in the path /var/run/secrets/kubernetes.io/serviceaccount/token
+This way the pods will use https://github.com/antoniodefazio/cachenocosts/blob/master/src/main/resources/jgroups-kubernetes-kube-ping.xml as the JGroups configuration, so we will use the Jgroups(https ://github.com/jgroups-extras/jgroups-kubernetes). In a nutshell, this exploits the power of Kuberntes labels as pod selectors which can be searched for and registered as cache nodes. In summary: in order for a pods to call the K8S API to know which pods have a certain label it needs the privileges to do so, as in K8S RBAC is in force each pod needs an associated ServiceAccount with the privileges to make the call. By associating the ServiceAccount with the pod, K8S places the token with privileges in the path /var/run/secrets/kubernetes.io/serviceaccount/token
 
 But let's get practical to understand better: ssh into the pod and launch the following commands in sequence:
 
