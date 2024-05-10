@@ -40,7 +40,7 @@ Now we have 2 Spring Boot running on different ports, 2 JVMs, no insert in cache
 
 Docker Desktop introduced the ability to use Kubernetes as an orchestration tool in version 18.02, released in February 2018 so after install Docker Desktop you can enable K8S to get a cluster running on localhost.
 
-- locally build the docker image at https://github.com/antoniodefazio/cachenocosts/blob/master/Dockerfile, it is a 2 phase build optimized caching the Maven .m2 folder. I also installed curl and apache2-utils for our tests within the pods. We can use it thanks to _imagePullPolicy: Never_
+- locally build the docker image at https://github.com/antoniodefazio/cachenocosts/blob/master/Dockerfile, it is a 2 phase build optimized caching the Maven .m2 folder. I also installed curl and apache2-utils for our tests within the pods. We can use it in local K8S thanks to **_imagePullPolicy: Never_**
 - kubectl apply the https://github.com/antoniodefazio/cachenocosts/blob/master/k8s/noserver-k8s-objects.yaml
 
 (I underline that there are 2 replicas, therefore we will have **2 pods running with Deployment name cachenoserver**)
