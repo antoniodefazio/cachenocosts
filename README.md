@@ -145,7 +145,7 @@ It is the same for local K8S, except for LoadBalancer creations as we know that 
      labels="${KUBERNETES_LABELS:app=cachenoserver}"
    />_
    
-the namespace is no more default so you can choose one and in Openshift, example, is the name of the project.
+the namespace is no more _default_ so you can choose one and in Openshift, example, is the name of the project.
 
 So:
 
