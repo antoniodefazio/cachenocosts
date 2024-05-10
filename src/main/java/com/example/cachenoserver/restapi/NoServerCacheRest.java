@@ -57,7 +57,7 @@ public class NoServerCacheRest {
 	}
 
 	@GetMapping("/hitCached")
-	@Operation(summary = "This API is @Cacheable", description = " it can be run at two different nodes in a way to verify that they are aligned(no logs in the second node). @Cacheable can be used to cache databse data")
+	@Operation(summary = "This API is @Cacheable", description = " it can be run at two different nodes in a way to verify that they are aligned, inside the Service the @Cacheable is used to cache database data")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "successful operation") })
 	public ResponseEntity<String> hitCached() {
 		log.info("************Calling hitCached************");
