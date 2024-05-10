@@ -1,4 +1,4 @@
-# How to create a zero-cost distributed cache that works on all managed Kubernetes services: Openshift, GKE, EKS and so on, via Jgroups Java library in conjunction with Infinispan inside a Spring Boot project
+# How to create a zero cost distributed cache that works on all managed Kubernetes services: Openshift, GKE, EKS and so on, via Jgroups Java library in conjunction with Infinispan inside a Spring Boot project
 
 I worked for the most important Italian telecommunications company, the manager tells me that during a migration we have to manage some data with a distributed and shared cache across the various pods. My proposal "Let's use Redis!", the manager's response "the budget does not include the introduction of another infrastructure". Then I thought "Actually nothing in life comes for free..."
 
