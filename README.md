@@ -13,9 +13,14 @@ Brief description of the project:
 The project exposes the simple REST APIs documentation via Swagger to http://localhost:8080/swagger-ui/index.html#:
 
 -/infinispanhit/, inserts value in cache with a specified key, it can be run in a node and call get in another node, to verify that they are aligned 
--/infinispanget/, gets value from cach with a specified key, it can be run at two different nodes in a way to verify that they are aligned 
+
+-/infinispanget/, gets value from cach with a specified key, it can be run at two different nodes in a way to verify that they are aligned
+
 -/hitCached, inside the Service the @Cacheable is used to cache database data
--/all-caches, fetches all caches and their data can be run at two different nodes in a way to verify that they are aligned
+
+-/all-caches, fetches all caches(distributed and not) and their data can be run at two different nodes in a way to verify that they are aligned
+
+
 
 
 # 1) Steps to test the app locally
