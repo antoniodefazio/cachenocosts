@@ -163,3 +163,5 @@ Inside one of these pods(**cachenoserver**) we hit the “others”(**cachenoser
 - _ab -n 1000 cachenoserver2-service:8080/infinispanget/3_
 
 Apache Benchmark allows you to make 1000 simultaneous calls to make sure you query all the pods "behind" a Service…..
+
+**It is very interesting to note that by eliminating the Deployments, the cache remains "alive and consistent" if at least one pod remains active, therefore this caching technique certainly has a very high reliability as there is in fact a replica for each pod, and each "new" pod acts as an updated replica.**
