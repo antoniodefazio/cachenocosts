@@ -164,4 +164,4 @@ Inside one of these pods(**cachenoserver**) we hit the “others”(**cachenoser
 
 Apache Benchmark allows you to make 1000 simultaneous calls to make sure you query all the pods "behind" a Service…..
 
-**It is very interesting to note that by eliminating the Deployments, the cache remains "alive and consistent" if at least one pod remains active, therefore this caching technique certainly has a very high reliability as there is in fact a replica for each pod, and each "new" pod acts as an updated replica.**
+**It is very interesting to note that if you have n pods, by eliminating a Deployment(so you have n-m pods), the cache remains "alive and consistent" if at least one pod remains active, therefore this caching technique certainly has a very high reliability as there is in fact a replica for each pod, and each "new" pod acts as an updated replica.**
