@@ -2,7 +2,7 @@
 
 I worked for the most important Italian telecommunications company, the manager tells me that during a migration we have to manage some data with a distributed and shared cache across the various pods. My proposal "Let's use Redis!", the manager's response "the budget does not include the introduction of another infrastructure". Then I thought "Actually nothing in life comes for free..."
 
-I start with in-depth questions about the task assigned to me and do a small analysis of the requirements and a minimum feasibility study of my solution starting my research. I also point out to the manager that we are in the migration phase so we need to use a solution that works for both Google Kuberntes Engine and Openshift.
+I start with in-depth questions about the task assigned to me and do a small analysis of the requirements and a minimum feasibility study of my solution starting my research. I also point out to the manager that we are in the migration phase so we need to use a solution that works for both Google Kuberntes Engine and Openshift. **From the analysis I discover that these are data that rarely change and when they change I can invoke eviction.**
 
 I discover that exists an open source toolkit for reliable messaging written in Java: JGroups (www.jgroups.org) , and it can be used under the covers to send messages back and forth between other application servers, optimizing network communication and resource usage for distributed applications. Furthermore, JGroups and Infinispan(https://infinispan.org/) together can create a distributed cache where every pod/application is a node, because JGroups provides multicast-based group communication. The most important object of JGroups is JChannel(http://www.jgroups.org/javadoc3/org/jgroups/JChannel.html) which serves as the backbone of communication, it is able to send messages to all node registered.      
 
@@ -93,7 +93,7 @@ spec:
   selector:
     app: cachenoserver
 
-which esposes the 8080 port to the cluster we can hit the same http://localhost:8080/swagger-ui/index.html#, but remembering that we are now aiming for pods(2) running in our local k8s.
+**which esposes the 8080 port to the cluster** we can hit the same http://localhost:8080/swagger-ui/index.html#, but remembering that we are now aiming for pods(2) running in our local k8s.
 
 So:
 
@@ -121,7 +121,7 @@ spec:
   selector:
     app2: cachenoserver2
 
-which esposes the 8081 port to the cluster we can hit the same http://localhost:8081/swagger-ui/index.html#, but remembering that we are now aiming for pods(2) running in our local k8s.
+**which esposes the 8081 port to the cluster** we can hit the same http://localhost:8081/swagger-ui/index.html#, but remembering that we are now aiming for pods(2) running in our local k8s.
 
 - curl http://localhost:8081/infinispanget/3 to get the value in cache with key “3” and  verify that they are aligned with 8080 app
 
@@ -137,6 +137,7 @@ It is the same for local K8S, except for LoadBalancer creations as we know that 
      namespace="${POD_NAMESPACE:antoniodefazio-dev}"
      labels="${KUBERNETES_LABELS:app=cachenoserver}"
    />
+   
 the namespace is no more default so you can choose one and in Openshift, example, is the name of the project.
 
 So:
@@ -145,11 +146,11 @@ So:
 
 (I underline that now there are another 2 replicas of different pods, therefore we will now have in Cloud K8Stotal 4 pods running labeled app: cachenoserver)
 
-Now we don t have any LoadBalancer and any external access to test the cache I decide to use Apache Benchmark(https://httpd.apache.org/docs/2.4/programs/ab.html) within the pods, so after ssh into pod reached by Service cachenoserver-service(remember that the pod reached by cachenoserver2-service are the second ones):
+Now we don t have any LoadBalancer and any external access to test the cache I decide to use Apache Benchmark(https://httpd.apache.org/docs/2.4/programs/ab.html) within the pods, so after ssh into pod reached by **Service cachenoserver-service**(remember that the pod reached by cachenoserver2-service are the second ones):
 
-- curl http://localhost:8080/infinispanhit/3
+- curl http://localhost:8080/infinispanhit/3, to save in cache
 
-Inside one of these pods we hit the “others”(cachenoserver2-service) via: 
+Inside one of these pods(**cachenoserver-service**) we hit the “others”(**cachenoserver2-service**) via: 
 
 - curl cachenoserver2-service:8080/infinispanget/3
 - ab -n 1000 cachenoserver2-service:8080/infinispanget/3
