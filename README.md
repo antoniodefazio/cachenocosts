@@ -43,7 +43,7 @@ Docker Desktop introduced the ability to use Kubernetes as an orchestration tool
 - locally build the docker image at https://github.com/antoniodefazio/cachenocosts/blob/master/Dockerfile, it is a 2 phase build optimized caching the Maven .m2 folder. I also installed curl and apache2-utils for our tests within the pods.
 - kubectl apply the https://github.com/antoniodefazio/cachenocosts/blob/master/k8s/noserver-k8s-objects.yaml
 
-(I underline that there are 2 replicas, therefore we will have 2 pods running)
+(I underline that there are 2 replicas, therefore we will have **2 pods running with Deployment name cachenoserver**)
 
 
 This way the pods will use https://github.com/antoniodefazio/cachenocosts/blob/master/src/main/resources/jgroups-kubernetes-kube-ping.xml as the JGroups configuration, so we will use the Jgroups KUBE_PING protocol(https://github.com/jgroups-extras/jgroups-kubernetes). In a nutshell, this exploits the power of Kuberntes labels as pod selectors which can be searched for and registered as cache nodes. In summary: in order for a pods to call the K8S API to know which pods have a certain label it needs the privileges to do so, as in K8S RBAC is in force each pod needs an associated ServiceAccount with the privileges to make the call. By associating the ServiceAccount with the pod, K8S places the token with privileges in the path /var/run/secrets/kubernetes.io/serviceaccount/token
@@ -76,7 +76,7 @@ Now let's use curl to make the call we talked about above:
 curl --cacert ${CACERT} --header "Authorization: Bearer ${TOKEN}" -X GET ${APISERVER}/api/v1/namesp
 aces/${NAMESPACE}/pods?labelSelector=app%3Dcachenoserver
 
-The result is the list of running pods with label app: cachenoserver
+**The result is the list of running pods with label app: cachenoserver**
 
 Now, thanks to the K8S LoadBalancer
 
@@ -146,11 +146,11 @@ So:
 
 (I underline that now there are another 2 replicas of different pods, therefore we will now have in Cloud K8Stotal 4 pods running labeled app: cachenoserver)
 
-Now we don t have any LoadBalancer and any external access to test the cache I decide to use Apache Benchmark(https://httpd.apache.org/docs/2.4/programs/ab.html) within the pods, so after ssh into pod reached by **Service cachenoserver-service**(remember that the pod reached by cachenoserver2-service are the second ones):
+Now we don t have any LoadBalancer and any external access to test the cache I decide to use Apache Benchmark(https://httpd.apache.org/docs/2.4/programs/ab.html) within the pods, so after ssh into pod with **Deployment name cachenoserver**(remember that the pod cachenoserver2 are the second ones):
 
 - curl http://localhost:8080/infinispanhit/3, to save in cache
 
-Inside one of these pods(**cachenoserver-service**) we hit the “others”(**cachenoserver2-service**) via: 
+Inside one of these pods(**cachenoserver**) we hit the “others”(**cachenoserver2**) via service discovery: 
 
 - curl cachenoserver2-service:8080/infinispanget/3
 - ab -n 1000 cachenoserver2-service:8080/infinispanget/3
