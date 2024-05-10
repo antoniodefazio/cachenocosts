@@ -51,18 +51,23 @@ This way the pods will use https://github.com/antoniodefazio/cachenocosts/blob/m
 But let's get practical to understand better: ssh into the pod and launch the following commands in sequence:
 
 Point to the internal API server hostname
+
 APISERVER="https://${KUBERNETES_SERVICE_HOST}:${KUBERNETES_SERVICE_PORT}" 
 
 Path to ServiceAccount token
+
 SERVICEACCOUNT=/var/run/secrets/kubernetes.io/serviceaccount
 
 Read this Pod's namespace
+
 NAMESPACE=$(cat ${SERVICEACCOUNT}/namespace)
 
 Read the ServiceAccount bearer token
+
 TOKEN=$(cat ${SERVICEACCOUNT}/token)
 
 Reference the internal certificate authority (CA)
+
 CACERT=${SERVICEACCOUNT}/ca.crt
 
 
