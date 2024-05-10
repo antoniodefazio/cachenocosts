@@ -98,7 +98,7 @@ _spec:
 
 **which esposes the 8080 port to the cluster** we can hit the same http://localhost:8080/swagger-ui/index.html#, but remembering that we are now aiming for pods(2) running in our local k8s.
 
-So:
+Sohttps://github.com/antoniodefazio/cachenocosts/blob/master/src/main/resources/infinispan_clustered_kube_ping.xml:
 
 - curl http://localhost:8080/infinispanhit/3 to insert the value in cache with key “3”
 - to now test using get that the 2 pods are actually aligned we must **ensure that the LoadBalancer balancing algorithm queries both** and in this regard I have prepared a Jmeter(https://jmeter.apache.org/) file at https://github.com/antoniodefazio/cachenocosts/blob/master/k8s/HTTP_Request.jmx which allows you to make thousands of simultaneous calls following which you can **check the logs** you can see how both pods contain the same data in cache
@@ -137,17 +137,17 @@ _spec:
 
 - kubectl apply the https://github.com/antoniodefazio/cachenocosts/blob/master/k8s/remote-noserver-k8s-objects.yaml
 
-It is the same for local K8S, except for LoadBalancer creations as we know that for k8s no differences between cloud and onprem, the only difference is in the integration points like LoadBalancer. **The same is also the Infinispan and related Jgroups configuration but I just wanted to keep separated files for Cloud** and underline, example, that in
+Same K8S objects for local K8S, except for LoadBalancer creations as we know that for K8S no differences between cloud and onprem, the only difference is in the **integration points** like LoadBalancer. **The same is also the Infinispan and related Jgroups configuration and protocol but I just wanted to keep separated files for Cloud** and underline, example, that in https://github.com/antoniodefazio/cachenocosts/blob/master/src/main/resources/jgroups-kubernetes-kube-ping-opsh.xml we have:
 
  _<org.jgroups.protocols.kubernetes.KUBE_PING
      port_range="10"
-     namespace="${POD_NAMESPACE:antoniodefazio-dev}"
+     namespace="**${POD_NAMESPACE:antoniodefazio-dev}**"
      labels="${KUBERNETES_LABELS:app=cachenoserver}"
    />_
    
-the namespace is no more _default_ so you can choose one and in Openshift, example, is the name of the project.
+the namespace is no more **_default_**(as in https://github.com/antoniodefazio/cachenocosts/blob/master/src/main/resources/infinispan_clustered_kube_ping.xml) so you can choose one and in Openshift, example, is the name of the project.
 
-So:
+Next:
 
 - kubectl apply the https://github.com/antoniodefazio/cachenocosts/blob/master/k8s/remote-noserver2-k8s-objects2.yaml
 
