@@ -130,7 +130,7 @@ which esposes the 8081 port to the cluster we can hit the same http://localhost:
 
 - kubectl apply the https://github.com/antoniodefazio/cachenocosts/blob/master/k8s/remote-noserver-k8s-objects.yaml
 
-It is the same for local K8S, except for LoadBalancer creations as we know that for k8s no differences between cloud and onprem, the only difference is in the integration points like LoadBalancer. The same is also the Infinispan and related Jgroups configuration but I just wanted to keep separated files for Cloud and underline, esemple, that in
+It is the same for local K8S, except for LoadBalancer creations as we know that for k8s no differences between cloud and onprem, the only difference is in the integration points like LoadBalancer. The same is also the Infinispan and related Jgroups configuration but I just wanted to keep separated files for Cloud and underline, example, that in
 
  <org.jgroups.protocols.kubernetes.KUBE_PING
      port_range="10"
